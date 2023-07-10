@@ -121,6 +121,23 @@ namespace ams::i2c {
         R_SUCCEED();
     }
 
+    Result OpenSessionForDev(I2cSession *out, s32 bus_idx, u16 slave_address, i2c::AddressingMode addressing_mode, i2c::SpeedMode speed_mode) {
+        /* Get manager for the device. */
+        auto manager = GetManager(ConvertToDeviceCode(I2cBus(bus_idx)));
+
+        /* Get the session. */
+        ams::sf::SharedPointer<i2c::sf::ISession> session;
+        {
+            R_TRY(manager->OpenSessionForDev(std::addressof(session), bus_idx, slave_address, addressing_mode, speed_mode));
+        }
+
+        /* Set output. */
+        out->_session = session.Detach();
+
+        /* We succeeded. */
+        R_SUCCEED();
+    }
+
     void CloseSession(I2cSession &session) {
         /* Close the session. */
         ams::sf::ReleaseSharedObject(GetInterface(session));

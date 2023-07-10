@@ -24,6 +24,7 @@ namespace ams::i2c {
     };
 
     Result OpenSession(I2cSession *out, DeviceCode device_code);
+    Result OpenSessionForDev(I2cSession *out, s32 bus_idx, u16 slave_address, i2c::AddressingMode addressing_mode, i2c::SpeedMode speed_mode);
     void CloseSession(I2cSession &session);
 
     Result Send(const I2cSession &session, const void *src, size_t src_size, TransactionOption option);
